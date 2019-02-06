@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Practos 2</title>
+</head>
+<body>
+<p>Размер обоймы: <input type='number' id='clipSizeInput'>
+<button id="createGame">Создать игру</button></p>
+<button id="rouletteButton" style='display:none;'>Рулетка!</button>
+<button id="newGame" style='display:none;' onClick='location.reload()'>Новая игра</button>
+<script>
+
+	class RussianRoulette
+	{
+		doRoulette(){
+			let shot = this.getRandom();
+			let msg = `\nРазмер обоймы: ${this.clipSize}\nГнездо с патроном: ${this.bullet}\nВаш выстрел с гнезда: ${shot}`;
+			if (shot!=this.bullet) {
+				alert('Вы выиграли! '+msg);
+			} else {
+				alert('Вам не повезло :( '+msg);
+				buttonRoulette.disabled='true';
+				buttonNewGame.style.display='inline';
+			}
+		}
+
+		constructor(clipSize=6){
+			this.clipSize = (isNaN(clipSize)) ? 6 :clipSize;
+			this.bullet = this.getRandom();
+		}
+
+		getRandom(){
+			let rand = 1 - 0.5 + Math.random() * (this.clipSize);
+			rand = Math.round(rand);
+			return rand;
+		}
+	}
+
+	let game = null;
+
+	buttonStart = document.getElementById('createGame');
+	buttonRoulette = document.getElementById('rouletteButton');
+	buttonNewGame = document.getElementById('newGame');
+
+	buttonStart.onclick = function(){
+		let user_clipsize = document.getElementById('clipSizeInput').value;
+		game = new RussianRoulette(parseInt(user_clipsize));
+		buttonRoulette.style.display = "inline";
+		document.getElementsByTagName('p')[0].style.display = 'none';
+	}
+
+	buttonRoulette.onclick = function(){
+		game.doRoulette();
+		// console.log(game);
+	}
+	
+
+</script>
+</body>
+</html>
